@@ -79,14 +79,18 @@ public class Main implements Runnable {
         while (!yaPasaron) {
             int prisionero = random.nextInt(Constante.PRISIONEROS);
             if (!threads[prisionero].isAlive()) {
-                try{
+                threads[prisionero] = new Thread(m, Integer.toString(prisionero)); // Sin esta linea no se puede volver a iniciar el hilo
+                try {
                     threads[prisionero].start();
-                }catch(Exception e){
+                    threads[prisionero].join();
+                } catch (Exception e) {
                     System.err.println("Error en el hilo " + prisionero + " " + e.toString());
                 }
-                threads[prisionero].join();
             }
         }
+        
+        System.out.println("Tenemos un total de " + Constante.PRISIONEROS + " prisioneros");
+        System.out.println("Se espera que el contador sea " + (2 * Constante.PRISIONEROS - 2));
         
         System.out.println("Tenemos un total de " + Constante.PRISIONEROS + " prisioneros");
         System.out.println("Se espera que el contador sea " + (2*Constante.PRISIONEROS - 2));
